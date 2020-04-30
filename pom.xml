@@ -10,6 +10,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.java>1.8</version.java>
+        <version.maven-jar-plugin>2.4</version.maven-jar-plugin>
+        <version.maven-compiler-plugin>2.3.2</version.maven-compiler-plugin>
+        <version.maven-assembly-plugin>3.1.1</version.maven-assembly-plugin>
+        <version.discord4j>3.0.14</version.discord4j>
+        <version.junit>4.12</version.junit>
     </properties>
 
     <build>
@@ -17,7 +23,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
+                <version>${version.maven-jar-plugin}</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -31,16 +37,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>${version.maven-compiler-plugin}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${version.java}</source>
+                    <target>${version.java}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>${version.maven-assembly-plugin}</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -62,19 +68,18 @@
                 </executions>
             </plugin>
         </plugins>
-
     </build>
 
     <dependencies>
         <dependency>
             <groupId>com.discord4j</groupId>
             <artifactId>discord4j-core</artifactId>
-            <version>3.0.14</version>
+            <version>${version.discord4j}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${version.junit}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
