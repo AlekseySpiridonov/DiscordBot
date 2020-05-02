@@ -3,6 +3,10 @@
 ### How to build
 ```mvn package```
 
+### Release versions
+Binary versions avalible on [GitHub Packages](https://github.com/AlekseySpiridonov/discordbot/packages)  
+Download "DiscordBot-*-jar-with-dependencies.jar" for start standalone application.
+
 ### How to start
 1. Get API Token for DiscordBot
 2. Create and save Knowledge Base for bot. Example of knowledge base: ```src/main/resources/base.properties```
