@@ -41,7 +41,8 @@ public class ResponsesHelper {
             knowledgeBase = readKnowledgeBaseFile(KNOWLEDGE_BASE_PATH);
             knowledgeBase.setProperty("!ping", "Pong"); //Base "!ping" command
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Database wasn't loaded correctly "+e);
+            System.exit(-1);
         }
 
         return responsesHelper;
