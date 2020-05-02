@@ -23,7 +23,7 @@ public class ResponsesHelperTest {
     public void validatePingResponse() {
         Message message = createDiscordTestMessage("!ping");
         ResponsesHelper responsesHelper = new ResponsesHelper(KNOWLEDGE_BASE);
-        assertEquals(USERNAME+" pong", responsesHelper.returnResponse(message));
+        assertEquals("Pong", responsesHelper.returnResponse(message));
     }
 
     private Message createDiscordTestMessage(String msg) {

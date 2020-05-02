@@ -13,14 +13,13 @@ public class ResponsesHelper {
     Properties knowledgeBase;
 
     /**
-     *
      * @param clientMsg - original Discord message from client
      * @return response - string with bot's response or null if bot have no valid response
      */
     public String returnResponse(Message clientMsg) {
         String response = null;
-        if (clientMsg.getContent().map("!ping"::equals).orElse(false)) {
-            response = getClientUsername(clientMsg) + " pong"; // Test response
+        if (clientMsg.getContent().map("!all"::equals).orElse(false)) {
+            response = knowledgeBase.stringPropertyNames().toString();
         } else if (clientMsg.getContent().map(knowledgeBase.keySet().toString()::contains).orElse(false)) {
             response = knowledgeBase.getProperty(clientMsg.getContent().get()); // Responses from knowledge base
         }
@@ -36,10 +35,11 @@ public class ResponsesHelper {
         }).getUsername();
     }
 
-    private ResponsesHelper initResponse() {
+    private ResponsesHelper initBotKnowledgeBase() {
         try {
             // Fill knowledge base from file
             knowledgeBase = readKnowledgeBaseFile(KNOWLEDGE_BASE_PATH);
+            knowledgeBase.setProperty("!ping", "Pong"); //Base "!ping" command
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,12 +48,11 @@ public class ResponsesHelper {
     }
 
     /**
-     *
      * @param path - valid path for Bot's Knowledge base. Example of Knowledge base: src/main/resources/base.properties
      */
     public ResponsesHelper(String path) {
         KNOWLEDGE_BASE_PATH = path;
-        responsesHelper = initResponse();
+        responsesHelper = initBotKnowledgeBase();
     }
 
 
