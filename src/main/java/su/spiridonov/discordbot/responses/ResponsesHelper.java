@@ -2,6 +2,8 @@ package su.spiridonov.discordbot.responses;
 
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -11,6 +13,9 @@ public class ResponsesHelper {
     private String KNOWLEDGE_BASE_PATH;
     private ResponsesHelper responsesHelper;
     Properties knowledgeBase;
+
+    private static Logger logger = LoggerFactory.getLogger(ResponsesHelper.class);
+
 
     /**
      * @param clientMsg - original Discord message from client
@@ -41,7 +46,7 @@ public class ResponsesHelper {
             knowledgeBase = readKnowledgeBaseFile(KNOWLEDGE_BASE_PATH);
             knowledgeBase.setProperty("!ping", "Pong"); //Base "!ping" command
         } catch (Exception e) {
-            System.err.println("Database wasn't loaded correctly "+e);
+            logger.error("Database wasn't loaded correctly "+e);
             System.exit(-1);
         }
 

@@ -16,6 +16,8 @@
         <version.maven-assembly-plugin>3.1.1</version.maven-assembly-plugin>
         <version.discord4j>3.0.14</version.discord4j>
         <version.junit>4.12</version.junit>
+        <version.slf4j>1.7.30</version.slf4j>
+        <version.logback>1.0.13</version.logback>
     </properties>
 
     <build>
@@ -75,6 +77,16 @@
             <groupId>com.discord4j</groupId>
             <artifactId>discord4j-core</artifactId>
             <version>${version.discord4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${version.logback}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
