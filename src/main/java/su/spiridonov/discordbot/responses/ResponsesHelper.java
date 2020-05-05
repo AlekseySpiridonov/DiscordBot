@@ -4,15 +4,20 @@ import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import su.spiridonov.discordbot.responses.commands.BotCommand;
+import su.spiridonov.discordbot.responses.commands.impl.DynamicCommand;
+import su.spiridonov.discordbot.responses.commands.impl.StaticCommand;
 
 import java.io.FileInputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.function.Supplier;
 
 public class ResponsesHelper {
     private String KNOWLEDGE_BASE_PATH;
     private ResponsesHelper responsesHelper;
-    Properties knowledgeBase;
+    Map<String, BotCommand> knowledgeBase;
 
     private static Logger logger = LoggerFactory.getLogger(ResponsesHelper.class);
 
@@ -24,9 +29,11 @@ public class ResponsesHelper {
     public String returnResponse(Message clientMsg) {
         String response = null;
         if (clientMsg.getContent().map("!all"::equals).orElse(false)) {
-            response = knowledgeBase.stringPropertyNames().toString();
+            response = knowledgeBase.keySet().toString();
         } else if (clientMsg.getContent().map(knowledgeBase.keySet().toString()::contains).orElse(false)) {
-            response = knowledgeBase.getProperty(clientMsg.getContent().get()); // Responses from knowledge base
+            BotCommand botCommand = knowledgeBase.get(clientMsg.getContent().get());
+            if (botCommand != null)
+                response = botCommand.returnResult(); // Responses from knowledge base
         }
         return response;
     }
@@ -44,9 +51,8 @@ public class ResponsesHelper {
         try {
             // Fill knowledge base from file
             knowledgeBase = readKnowledgeBaseFile(KNOWLEDGE_BASE_PATH);
-            knowledgeBase.setProperty("!ping", "Pong"); //Base "!ping" command
         } catch (Exception e) {
-            logger.error("Database wasn't loaded correctly "+e);
+            logger.error("Database wasn't loaded correctly " + e);
             System.exit(-1);
         }
 
@@ -62,19 +68,29 @@ public class ResponsesHelper {
     }
 
 
-    protected static Properties readKnowledgeBaseFile(String fileName) throws Exception {
+    protected static Map<String, BotCommand> readKnowledgeBaseFile(String fileName) throws Exception {
         FileInputStream fileInputStream = null;
         Properties properties = null;
+        Map<String, BotCommand> knowledgeBase = new HashMap<>();
         try {
             fileInputStream = new FileInputStream(fileName);
             properties = new Properties();
             properties.load(fileInputStream);
+            properties.setProperty("!ping", "Pong"); //Base "!ping" command
+            for (String key : properties.stringPropertyNames()) {
+                String value = properties.getProperty(key);
+                if (value.startsWith("!")) {
+                    knowledgeBase.put(key, new DynamicCommand(value.substring(1, value.length())));
+                } else {
+                    knowledgeBase.put(key, new StaticCommand(value));
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (fileInputStream != null)
                 fileInputStream.close();
         }
-        return properties;
+        return knowledgeBase;
     }
 }
