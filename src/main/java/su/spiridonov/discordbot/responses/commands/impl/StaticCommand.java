@@ -1,5 +1,6 @@
 package su.spiridonov.discordbot.responses.commands.impl;
 
+import discord4j.core.object.entity.Message;
 import su.spiridonov.discordbot.responses.commands.BotCommand;
 
 public class StaticCommand extends BotCommand {
@@ -9,7 +10,7 @@ public class StaticCommand extends BotCommand {
     }
 
     @Override
-    public String returnResult() {
+    public String returnResult(Message clientMsg) {
         return super.result;
     }
 

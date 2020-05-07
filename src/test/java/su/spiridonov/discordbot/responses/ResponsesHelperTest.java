@@ -26,6 +26,13 @@ public class ResponsesHelperTest {
         assertEquals("Pong", responsesHelper.returnResponse(message));
     }
 
+    @Test
+    public void validatePingResponseWithBlanParams() {
+        Message message = createDiscordTestMessage("!ping  ");
+        ResponsesHelper responsesHelper = new ResponsesHelper(KNOWLEDGE_BASE);
+        assertEquals("Pong", responsesHelper.returnResponse(message));
+    }
+
     private Message createDiscordTestMessage(String msg) {
         ResponsesHelper responsesHelper = new ResponsesHelper(KNOWLEDGE_BASE);
         UserBean userBean = new UserBean();
