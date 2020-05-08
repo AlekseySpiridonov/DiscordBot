@@ -1,11 +1,14 @@
 # Simple DiscordBot
 
 ### How to build
-```mvn package```
+```mvn package``` (Java binary)  
+```mvn package -Dproject.build.skip-docker=false``` (Java binary & Docker container)  
 
 ### Release versions
 Binary versions avalible on [GitHub Packages](https://github.com/AlekseySpiridonov/discordbot/packages)  
-Download "DiscordBot-*-jar-with-dependencies.jar" for start standalone application.
+Download `DiscordBot-*-jar-with-dependencies.jar` for start standalone application.  
+Docker containers availible on [GitHub Packages](https://github.com/AlekseySpiridonov/discordbot/packages) (but authorization is requring - [more information](https://github.community/t5/GitHub-Actions/docker-pull-from-public-GitHub-Package-Registry-fail-with-quot/td-p/32782))  
+
 
 ### How to configure Knowledge Base
 Create and save Knowledge Base for bot.  
@@ -27,4 +30,7 @@ Current version of bot supports three types of commands:
 ### How to start
 1. Get API Token for DiscordBot
 2. Run Jar by command
-```java -Dtoken="$TOKEN$" -Dbase="$PATH$/base.properties" -jar DiscordBot-*-jar-with-dependencies.jar ```
+```java -Dtoken="$TOKEN$" -Dbase="$PATH$/base.properties" -jar DiscordBot-*-jar-with-dependencies.jar ```   
+         OR   
+   Run Docker container  
+```docker run -d --restart=always --net=host -e TOKEN="$TOKEN$" -e BASE=/data/base.properties -v $PATH_FOR_DIRECTORY_WITH_CONFIG$:/data/ --name discordbot docker.pkg.github.com/alekseyspiridonov/discordbot/discordbot:$VERSION$```
