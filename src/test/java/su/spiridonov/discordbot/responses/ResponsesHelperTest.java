@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class ResponsesHelperTest {
     private static Logger logger = LoggerFactory.getLogger(ResponsesHelperTest.class);
-    String KNOWLEDGE_BASE = "src/main/resources/base.properties";
+    String KNOWLEDGE_BASE = "src/test/resources/base.for-test-needs.properties";
     String USERNAME = "test";
 
     @Test
