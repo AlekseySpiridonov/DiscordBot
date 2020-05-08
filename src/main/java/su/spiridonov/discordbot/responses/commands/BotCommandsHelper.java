@@ -22,7 +22,7 @@ public class BotCommandsHelper {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
-                result += line;
+                result += line + "\n";
                 logger.debug(line);
             }
             process.waitFor();

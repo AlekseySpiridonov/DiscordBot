@@ -1,6 +1,5 @@
 package su.spiridonov.discordbot.responses.commands.impl;
 
-import discord4j.core.object.entity.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import su.spiridonov.discordbot.responses.commands.BotCommand;
@@ -14,7 +13,7 @@ public class DynamicCommand extends BotCommand {
     }
 
     @Override
-    public String returnResult(Message clientMsg) {
+    public String returnResult(String clientMsg) {
         return BotCommandsHelper.runShellCommand(result);
     }
 
