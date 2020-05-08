@@ -9,7 +9,7 @@ public class StaticCommand extends BotCommand {
     }
 
     @Override
-    public String returnResult() {
+    public String returnResult(String clientMsg) {
         return super.result;
     }
 

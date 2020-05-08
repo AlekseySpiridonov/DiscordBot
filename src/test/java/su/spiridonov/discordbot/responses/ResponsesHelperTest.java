@@ -5,11 +5,15 @@ import discord4j.core.object.data.stored.MessageBean;
 import discord4j.core.object.data.stored.UserBean;
 import discord4j.core.object.entity.Message;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import su.spiridonov.discordbot.responses.commands.impl.ParameterizedCommand;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ResponsesHelperTest {
-    String KNOWLEDGE_BASE = "src/main/resources/base.properties";
+    private static Logger logger = LoggerFactory.getLogger(ResponsesHelperTest.class);
+    String KNOWLEDGE_BASE = "src/test/resources/base.for-test-needs.properties";
     String USERNAME = "test";
 
     @Test
@@ -24,6 +28,28 @@ public class ResponsesHelperTest {
         Message message = createDiscordTestMessage("!ping");
         ResponsesHelper responsesHelper = new ResponsesHelper(KNOWLEDGE_BASE);
         assertEquals("Pong", responsesHelper.returnResponse(message));
+    }
+
+    @Test
+    public void validatePingResponseWithBlanParams() {
+        Message message = createDiscordTestMessage("!ping  ");
+        ResponsesHelper responsesHelper = new ResponsesHelper(KNOWLEDGE_BASE);
+        assertEquals("Pong", responsesHelper.returnResponse(message));
+    }
+
+    @Test
+    public void validateParametrizedCommand() {
+        Message message = createDiscordTestMessage("!ns ya.ru");
+        ResponsesHelper responsesHelper = new ResponsesHelper(KNOWLEDGE_BASE);
+        assertTrue(responsesHelper.returnResponse(message).contains("Address:"));
+    }
+
+    @Test
+    public void validateSecurityOfParametrizedCommand() {
+        Message message = createDiscordTestMessage("!ns ya.ru; uptime");
+        ResponsesHelper responsesHelper = new ResponsesHelper(KNOWLEDGE_BASE);
+        ParameterizedCommand parameterizedCommand = new ParameterizedCommand("ns");
+        assertTrue(responsesHelper.returnResponse(message).equals(parameterizedCommand.returnSystemSecurityError()));
     }
 
     private Message createDiscordTestMessage(String msg) {

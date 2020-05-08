@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import su.spiridonov.discordbot.responses.commands.BotCommand;
 import su.spiridonov.discordbot.responses.commands.impl.DynamicCommand;
+import su.spiridonov.discordbot.responses.commands.impl.ParameterizedCommand;
 import su.spiridonov.discordbot.responses.commands.impl.StaticCommand;
 
 import java.io.FileInputStream;
@@ -28,12 +29,15 @@ public class ResponsesHelper {
      */
     public String returnResponse(Message clientMsg) {
         String response = null;
-        if (clientMsg.getContent().map("!all"::equals).orElse(false)) {
+        String msg = clientMsg.getContent().get();
+        String cmd = msg.split(" ")[0]; // Split for spaces (for commands with params)
+
+        if (cmd.contains("!all")) { //Base command for listing all available commands
             response = knowledgeBase.keySet().toString();
-        } else if (clientMsg.getContent().map(knowledgeBase.keySet().toString()::contains).orElse(false)) {
-            BotCommand botCommand = knowledgeBase.get(clientMsg.getContent().get());
+        } else if (knowledgeBase.keySet().toString().contains(cmd)) {
+            BotCommand botCommand = knowledgeBase.get(cmd);
             if (botCommand != null)
-                response = botCommand.returnResult(); // Responses from knowledge base
+                response = botCommand.returnResult(msg); // Responses from knowledge base
         }
         return response;
     }
@@ -79,7 +83,10 @@ public class ResponsesHelper {
             properties.setProperty("!ping", "Pong"); //Base "!ping" command
             for (String key : properties.stringPropertyNames()) {
                 String value = properties.getProperty(key);
-                if (value.startsWith("!")) {
+                if (value.startsWith("!") && value.contains("#params")) {
+                    String cmd = value.split(" ")[0];
+                    knowledgeBase.put(key, new ParameterizedCommand(cmd.substring(1, cmd.length())));
+                } else if (value.startsWith("!")) {
                     knowledgeBase.put(key, new DynamicCommand(value.substring(1, value.length())));
                 } else {
                     knowledgeBase.put(key, new StaticCommand(value));
