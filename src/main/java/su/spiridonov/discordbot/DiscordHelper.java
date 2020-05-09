@@ -9,13 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import su.spiridonov.discordbot.responses.ResponsesHelper;
 
+import java.io.IOException;
+import java.util.Properties;
+
 public class DiscordHelper {
     static String TOKEN;
     static String BASE_PATH;
 
     private static Logger logger = LoggerFactory.getLogger(DiscordHelper.class);
 
-    public static void startBot() {
+    public static void startBot() throws IOException {
+        printVersion();
         setupSystemProperties();
         ResponsesHelper responsesHelper = new ResponsesHelper(BASE_PATH);
 
@@ -42,5 +46,19 @@ public class DiscordHelper {
         //@TODO: Need parse it by some library as key\value params
         TOKEN = System.getProperty("token");
         BASE_PATH = System.getProperty("base");
+    }
+
+    private static void printVersion() throws IOException {
+        Properties properties = new Properties();
+        properties.load(Main.class.getClassLoader().getResourceAsStream("project.properties"));
+        String version = properties.getProperty("version");
+        if (version.contains("-")) {
+            // Release versions has only numbers and dots. For example: "1.0";
+            // all pre-release versions has postfix. For example: "1.0-ALPHA1", "1.0-SNAPSHOT".
+            logger.warn("Pre-release version: " + version);
+        } else {
+            logger.debug("Version: " + version);
+        }
+
     }
 }
