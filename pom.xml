@@ -16,7 +16,7 @@
         <version.maven-compiler-plugin>2.3.2</version.maven-compiler-plugin>
         <version.maven-assembly-plugin>3.1.1</version.maven-assembly-plugin>
         <version.discord4j>3.0.14</version.discord4j>
-        <version.junit>4.12</version.junit>
+        <version.junit>4.13.1</version.junit>
         <version.slf4j>1.7.30</version.slf4j>
         <version.logback>1.0.13</version.logback>
         <version.docker-maven-plugin>1.4.13</version.docker-maven-plugin>
